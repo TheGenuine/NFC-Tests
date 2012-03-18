@@ -1,5 +1,7 @@
 package de.reneruck;
 
+import java.io.IOException;
+
 import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.Intent;
@@ -67,19 +69,21 @@ public class Main extends Activity {
 
 	public void onResume() {
 	    super.onResume();
-	    mAdapter.enableForegroundDispatch(this, pendingIntent, intentFiltersArray, techListsArray);
+	    mAdapter.enableForegroundDispatch(this, pendingIntent, null, null);
 	}
 
 	public void onNewIntent(Intent intent) {
-		if(NfcAdapter.ACTION_NDEF_DISCOVERED.equals(intent.getAction())){
-			NdefMessage[] ndefMessages = NfcUtils.getNdefMessages(intent);
+		Uri data = intent.getData();
+		NdefMessage[] ndefMessages = NfcUtils.getNdefMessages(intent);
+		if(ndefMessages != null) {
 			for (NdefMessage ndefMessage : ndefMessages) {
 				NdefRecord[] records = ndefMessage.getRecords();
 				for (NdefRecord ndefRecord : records) {
-					Log.d(TAG, String.valueOf(ndefRecord.getPayload()));
+					Log.d(TAG, new String(ndefRecord.getPayload()));
 				}
 			}
 		}
 	}
-	
 }
+
+
