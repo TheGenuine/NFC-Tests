@@ -74,6 +74,7 @@ public class Main extends Activity {
 
 	public void onNewIntent(Intent intent) {
 		Uri data = intent.getData();
+		Log.d(TAG, "MimeType: " + intent.getType());
 		NdefMessage[] ndefMessages = NfcUtils.getNdefMessages(intent);
 		if(ndefMessages != null) {
 			for (NdefMessage ndefMessage : ndefMessages) {
